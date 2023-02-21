@@ -1,0 +1,32 @@
+{
+  "name": "tdd",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "jest --detectOpenHandles"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Martyn Lloyd-Kelly",
+    "email": "martynlloydkelly@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "supertest": "^6.3.3",
+    "testcontainers": "^9.0.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-pino-logger": "^7.0.0",
+    "mongodb": "^4.13.0"
+  },
+  "jest": {
+    "globalSetup": "./tests/lifecycle-management/globalSetup.js",
+    "globalTeardown": "./tests/lifecycle-management/globalTeardown.js",
+    "roots": [
+      "tests"
+    ],
+    "testEnvironment": "node"
+  }
+}
