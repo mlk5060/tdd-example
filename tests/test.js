@@ -1,5 +1,4 @@
 const Database = require ('../src/database')
-const { getTestDatabaseName } = require('./external-dependencies/database/test-database')
 const app = require('../src/app');
 const supertest = require('supertest');
 
