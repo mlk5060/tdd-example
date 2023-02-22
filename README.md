@@ -15,7 +15,6 @@ What Ian says in that video is how these tests have been constructed, and its jo
 1. We need a way to store musicians and their best songs.
     - A musician only needs their `name` and `best song` to be stored. 
     - There should only be one entry for each musician.
-2. We need a way to retrieve a musician and their best song based on their name.
 
 ## Directory/file structure
 
