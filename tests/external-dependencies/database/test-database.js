@@ -9,8 +9,12 @@ const createDatabaseContainer = async () => {
 		.withWaitStrategy(Wait.forLogMessage('Waiting for connections'))
 		.start();
 
-	process.env.NODEJS_TEST_APP_DB_URL = `mongodb://localhost:${startedContainer.getMappedPort(27017)}/test`; // GOTTA BE CAREFUL WITH THE PORTS!!
+	process.env.NODEJS_TEST_APP_DB_URL = `mongodb://localhost:${startedContainer.getMappedPort(27017)}/${getTestDatabaseName()}`; // GOTTA BE CAREFUL WITH THE PORTS!!
 };
+
+const getTestDatabaseName = () => {
+	return "test";
+}
 
 const teardownDatabaseContainer = async () => {
 	if (startedContainer) {
@@ -20,5 +24,6 @@ const teardownDatabaseContainer = async () => {
 
 module.exports = {
 	createDatabaseContainer,
+	getTestDatabaseName,
 	teardownDatabaseContainer
 };

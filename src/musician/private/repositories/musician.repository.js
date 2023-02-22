@@ -1,8 +1,10 @@
 const ObjectId = require('mongodb').ObjectId;
 
-const Database = require("../../database");
-const Musician = require ('../public/models/entities/musician.entity');
-const MusicianQueryResult = require('./value-objects/musician.query-result') 
+const Database = require("../../../database");
+const Musician = require('../../public/models/entities/musician.entity');
+
+const MusicianRetrieveResult = require('./value-objects/musician.retrieve-result');
+const MusicianCreateResult = require ('./value-objects/musician.create-result');
 
 class MusicianRepository {
 
@@ -11,26 +13,26 @@ class MusicianRepository {
     /**
      * 
      * @param {Musician} musician 
-     * @returns {Promise<MusicianQueryResult>}
+     * @returns {Promise<Musician | undefined>}
      */
-    async getByName(musician) {
+    async retrieveByName(musicianName) {
         const collection = await this.#getCollection();
-        const result = await collection.findOne({ name: musician.getName() })
+        const result = await collection.findOne({ name: musicianName })
         
-        if (result === null) return new MusicianQueryResult(false);
-        return new MusicianQueryResult(true);
+        if (result === null) return new MusicianRetrieveResult(undefined);
+        return new MusicianRetrieveResult(Musician.fromJSON(result));
     }
 
     /**
      * 
      * @param {Musician} musician 
-     * @returns {Promise<Musician>}
+     * @returns {Promise<MusicianCreateResult>}
      */
     async create(musician) {
         const collection = await this.#getCollection();
         const insertResult = await collection.insertOne(musician.toJSON())
         const createdMusicianJson = await collection.findOne({ _id: new ObjectId(insertResult.insertedId) })
-        return Musician.fromJSON(createdMusicianJson);
+        return new MusicianCreateResult(Musician.fromJSON(createdMusicianJson));
     }
 
     /**

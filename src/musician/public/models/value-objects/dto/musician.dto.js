@@ -1,4 +1,4 @@
-class MusicianCreateResult {
+class MusicianDto {
     #httpStatusCode
 
     /**
@@ -26,4 +26,4 @@ class MusicianCreateResult {
     }
 }
 
-module.exports = MusicianCreateResult;
+module.exports = MusicianDto;

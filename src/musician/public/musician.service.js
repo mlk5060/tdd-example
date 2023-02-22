@@ -1,6 +1,8 @@
-const MusicianRepository = require("../private/musician.repository");
-const MusicianCreateResultFailAlreadyExists = require("./models/value-objects/create-result/fail/musician.create-result.fail.already-exists");
-const MusicianCreateResultSuccess = require("./models/value-objects/create-result/success/musician.create-result.success");
+const MusicianRepository = require("../private/repositories/musician.repository");
+const MusicianCreateResultFailAlreadyExistsDto = require("./models/value-objects/dto/create-result/musician.create-result.fail.already-exists");
+const MusicianCreateResultSuccessDto = require("./models/value-objects/dto/create-result/musician.create-result.success");
+const MusicianRetrieveResultFailedDto = require("./models/value-objects/dto/retrieve-result/musician.retrieve-result.fail");
+const MusicianRetrieveResultSuccessDto = require("./models/value-objects/dto/retrieve-result/musician.retrieve-result.success");
 
 class MusicianService {
 
@@ -13,17 +15,27 @@ class MusicianService {
 	/**
 	 *
 	 * @param {Musician} 
-	 * @returns {Promise<MusicianCreateResult>}
+	 * @returns {Promise<MusicianDto>}
 	 */
 	async create(musician) {
-		const musicianQueryByNameResult = await this.#repository.getByName(musician);
+		const retrieveMusicianResult = await this.#repository.retrieveByName(musician.getName());
 
-		if (musicianQueryByNameResult.isFound()){
-			return new MusicianCreateResultFailAlreadyExists();
+		if (retrieveMusicianResult.musicianWasRetrieved()){
+			return new MusicianCreateResultFailAlreadyExistsDto();
 		}
 
-        const createdMusician = await this.#repository.create(musician)
-		return new MusicianCreateResultSuccess(createdMusician);
+        const createMusicianResult = await this.#repository.create(musician)
+		return new MusicianCreateResultSuccessDto(createMusicianResult.getCreatedMusician());
+	}
+
+	async retrieveByName(musicianName) {
+		const retrieveMusicianResult = await this.#repository.retrieveByName(musicianName);
+		
+		if (retrieveMusicianResult.musicianWasRetrieved()){
+			return new MusicianRetrieveResultSuccessDto(retrieveMusicianResult.getRetrievedMusician());
+		}
+		
+		return new MusicianRetrieveResultFailedDto();
 	}
 }
 

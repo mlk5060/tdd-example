@@ -1,6 +1,6 @@
-const MusicianCreateResult = require("../musician.create-result");
+const MusicianDto = require("../musician.dto");
 
-class MusicianCreateResultFailAlreadyExists extends MusicianCreateResult {
+class MusicianCreateResultFailAlreadyExistsDto extends MusicianDto {
 
     static #errorMessages = { errors: [ 'Hey, you checked in already!' ] }
 
@@ -16,8 +16,8 @@ class MusicianCreateResultFailAlreadyExists extends MusicianCreateResult {
      * }
      */
      getJsonHttpResponseBody(){
-        return MusicianCreateResultFailAlreadyExists.#errorMessages;
+        return MusicianCreateResultFailAlreadyExistsDto.#errorMessages;
     }
 }
 
-module.exports = MusicianCreateResultFailAlreadyExists;
+module.exports = MusicianCreateResultFailAlreadyExistsDto;

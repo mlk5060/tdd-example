@@ -1,6 +1,6 @@
-const MusicianCreateResult = require("../musician.create-result");
+const MusicianDto = require("../musician.dto");
 
-class MusicianCreateResultSuccess extends MusicianCreateResult {
+class MusicianCreateResultSuccessDto extends MusicianDto {
 
     #createdMusician;
 
@@ -22,4 +22,4 @@ class MusicianCreateResultSuccess extends MusicianCreateResult {
     }
 }
 
-module.exports = MusicianCreateResultSuccess;
+module.exports = MusicianCreateResultSuccessDto;
