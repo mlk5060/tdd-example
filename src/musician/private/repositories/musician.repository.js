@@ -13,7 +13,7 @@ class MusicianRepository {
     /**
      * 
      * @param {Musician} musician 
-     * @returns {Promise<Musician | undefined>}
+     * @returns {Promise<MusicianRetrieveResult | undefined>}
      */
     async retrieveByName(musicianName) {
         const collection = await this.#getCollection();

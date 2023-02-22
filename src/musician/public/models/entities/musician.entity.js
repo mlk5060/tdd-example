@@ -21,7 +21,7 @@ class Musician {
         return {
             _id: this.#_id,
             name: this.#name,
-            bestSong: this.#bestSong,
+            bestSong: this.#bestSong
         };
     }
 }

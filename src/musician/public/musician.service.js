@@ -28,6 +28,11 @@ class MusicianService {
 		return new MusicianCreateResultSuccessDto(createMusicianResult.getCreatedMusician());
 	}
 
+	/**
+	 * 
+	 * @param {string} musicianName 
+	 * @returns {Promise<MusicianDto>}
+	 */
 	async retrieveByName(musicianName) {
 		const retrieveMusicianResult = await this.#repository.retrieveByName(musicianName);
 		
