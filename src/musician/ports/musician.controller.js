@@ -8,7 +8,7 @@ const musicianService = new MusicianService();
 
 router.post('/', async (req, res) => {
 	const result = await musicianService.create(Musician.fromJSON(req.body));
-	result.respondViaHttp(res);
+	res.status(result.getHttpStatusCode()).send(result.getJsonHttpResponseBody());
 });
 
 module.exports = router;

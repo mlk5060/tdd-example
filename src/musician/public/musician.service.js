@@ -1,5 +1,6 @@
-const MusicianCreateResultFactory = require("../private/musician.create-result.factory");
 const MusicianRepository = require("../private/musician.repository");
+const MusicianCreateResultFailAlreadyExists = require("./models/value-objects/create-result/fail/musician.create-result.fail.already-exists");
+const MusicianCreateResultSuccess = require("./models/value-objects/create-result/success/musician.create-result.success");
 
 class MusicianService {
 
@@ -18,11 +19,11 @@ class MusicianService {
 		const musicianQueryByNameResult = await this.#repository.getByName(musician);
 
 		if (musicianQueryByNameResult.isFound()){
-			return MusicianCreateResultFactory.failsDueToMusicianAlreadyExisting();
+			return new MusicianCreateResultFailAlreadyExists();
 		}
 
         const createdMusician = await this.#repository.create(musician)
-		return MusicianCreateResultFactory.success(createdMusician);
+		return new MusicianCreateResultSuccess(createdMusician);
 	}
 }
 
