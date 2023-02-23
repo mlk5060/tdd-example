@@ -90,13 +90,13 @@ describe('Musicians', () => {
 		const createdMusicianResponse = await createMusicianOnServer(input)
 
 		// When: we then upvote that musician
-		const upvoteResponse = await upvoteMusician(createdMusicianResponse.body.id);
+		const upvoteResponse = await upvoteMusician(createdMusicianResponse.body._id);
 
 		// Then: we should get a 200 status code
 		expect(upvoteResponse.status).toEqual(200)
 
 		// And: the response body should be as expected
-		const responseBody = response.body
+		const responseBody = upvoteResponse.body
 		expect(responseBody.name).toEqual(input.name)
 		expect(responseBody.bestSong).toEqual(input.bestSong)
 		expect(responseBody.votes).toEqual(1)
@@ -104,7 +104,7 @@ describe('Musicians', () => {
 		expect(getAllKeysFromJson(responseBody).length).toEqual(4) // This helps to ensure we haven't missed any key values above!
 	})
 
-	it.only('should return a 404 and a response body that indicates the error if an upvote is attempted on a musician that does not exist on the server', async () => {
+	it('should return a 404 and a response body that indicates the error if an upvote is attempted on a musician that does not exist on the server', async () => {
 		
 		// When: we attempt to upvote a musician resource that hasn't been created on the server
 		const response = await upvoteMusician("DOES_NOT_EXIST");

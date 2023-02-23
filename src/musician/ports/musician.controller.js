@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 router.put('/:musicianId/votes', async (req, res) => {
-	const result = await musicianService.upvoteMusician();
+	const result = await musicianService.upvoteMusician(req.params.musicianId);
 	res.status(result.getHttpStatusCode()).send(result.getJsonHttpResponseBody());
 });
 

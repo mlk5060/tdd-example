@@ -3,6 +3,7 @@ const MusicianCreateResultFailAlreadyExistsDto = require("./models/value-objects
 const MusicianCreateResultSuccessDto = require("./models/value-objects/dto/create-result/musician.create-result.success");
 const MusicianRetrieveResultFailedDto = require("./models/value-objects/dto/retrieve-result/musician.retrieve-result.fail");
 const MusicianRetrieveResultSuccessDto = require("./models/value-objects/dto/retrieve-result/musician.retrieve-result.success");
+const MusicianUpdateResultSuccessDto = require("./models/value-objects/dto/update-result/musician.update-result.success");
 
 class MusicianService {
 
@@ -43,7 +44,20 @@ class MusicianService {
 		return new MusicianRetrieveResultFailedDto();
 	}
 
-	async upvoteMusician() {
+	/**
+	 * 
+	 * @param {string} musicianId 
+	 * @returns {Promise<MusicianDto>}
+	 */
+	async upvoteMusician(musicianId) {
+		const retrieveMusicianResult = await this.#repository.retrieveById(musicianId);
+
+		if (retrieveMusicianResult.musicianWasRetrieved()) {
+			const upvotedMusician = retrieveMusicianResult.getRetrievedMusician().upvote();
+			const updateResult = await this.#repository.update(upvotedMusician);
+			return new MusicianUpdateResultSuccessDto(updateResult.getUpdatedMusician());
+		}
+
 		return new MusicianRetrieveResultFailedDto();
 	}
 }
