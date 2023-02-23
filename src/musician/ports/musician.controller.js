@@ -17,4 +17,9 @@ router.get('/', async (req, res) => {
 	res.status(result.getHttpStatusCode()).send(result.getJsonHttpResponseBody());
 });
 
+router.put('/:musicianId/votes', async (req, res) => {
+	const result = await musicianService.upvoteMusician();
+	res.status(result.getHttpStatusCode()).send(result.getJsonHttpResponseBody());
+});
+
 module.exports = router;

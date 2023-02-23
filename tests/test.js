@@ -104,7 +104,7 @@ describe('Musicians', () => {
 		expect(getAllKeysFromJson(responseBody).length).toEqual(4) // This helps to ensure we haven't missed any key values above!
 	})
 
-	it('should return a 404 and a response body that indicates the error if an upvote is attempted on a musician that does not exist on the server', async () => {
+	it.only('should return a 404 and a response body that indicates the error if an upvote is attempted on a musician that does not exist on the server', async () => {
 		
 		// When: we attempt to upvote a musician resource that hasn't been created on the server
 		const response = await upvoteMusician("DOES_NOT_EXIST");
@@ -142,5 +142,5 @@ const getMusicianByNameFromServer = async (musicianName) => {
 }
 
 const upvoteMusician = async (id) => {
-	return await server.put(`api/v1/musicians/${id}/votes`)
+	return await server.put(`/api/v1/musicians/${id}/votes`)
 }

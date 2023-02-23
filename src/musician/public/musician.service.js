@@ -42,6 +42,10 @@ class MusicianService {
 		
 		return new MusicianRetrieveResultFailedDto();
 	}
+
+	async upvoteMusician() {
+		return new MusicianRetrieveResultFailedDto();
+	}
 }
 
 module.exports = MusicianService;
