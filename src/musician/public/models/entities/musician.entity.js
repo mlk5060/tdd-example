@@ -4,6 +4,7 @@ class Musician {
     #_id
     #name
     #bestSong
+    #votes
 
     static fromJSON(json) {
         return new Musician(json?._id, json.name, json.bestSong);
@@ -13,6 +14,7 @@ class Musician {
         this.#_id = id;
         this.#name = name;
         this.#bestSong = bestSong;
+        this.#votes = 0;
     }
 
     getName() { return this.#name; }
@@ -21,7 +23,8 @@ class Musician {
         return {
             _id: this.#_id,
             name: this.#name,
-            bestSong: this.#bestSong
+            bestSong: this.#bestSong,
+            votes: this.#votes
         };
     }
 }
