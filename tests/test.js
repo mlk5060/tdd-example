@@ -30,8 +30,9 @@ describe('Musicians', () => {
 		const responseBody = response.body
 		expect(responseBody.name).toEqual(input.name)
 		expect(responseBody.bestSong).toEqual(input.bestSong)
+		expect(responseBody.votes).toEqual(0)
 		expect(responseBody._id).toBeTruthy()
-		expect(getAllKeysFromJson(responseBody).length).toEqual(3) // This helps to ensure we haven't missed any key values above!
+		expect(getAllKeysFromJson(responseBody).length).toEqual(4) // This helps to ensure we haven't missed any key values above!
 	});
 
 	it('should return a 409 status code and an expected response body if the same input is sent to the POST input twice', async () => {
@@ -65,8 +66,9 @@ describe('Musicians', () => {
 		const responseBody = response.body
 		expect(responseBody.name).toEqual(input.name)
 		expect(responseBody.bestSong).toEqual(input.bestSong)
+		expect(responseBody.votes).toEqual(0)
 		expect(responseBody._id).toBeTruthy()
-		expect(getAllKeysFromJson(responseBody).length).toEqual(3) // This helps to ensure we haven't missed any key values above!
+		expect(getAllKeysFromJson(responseBody).length).toEqual(4) // This helps to ensure we haven't missed any key values above!
 	});
 
 	it('should return a 404 status code and an error message in the response body if a musician name is supplied and this artist does not have a best song saved on the server', async () => {
@@ -81,6 +83,39 @@ describe('Musicians', () => {
 		expect(response.body.errors).toEqual([ "Sorry, not on the list" ])
 		expect(getAllKeysFromJson(response.body).length).toEqual(2) // This helps to ensure we haven't missed any keys in the response above! We expect `errors` and one array index.
 	});
+
+	it('should return a 200 and a response body that contains the new number of votes for a musician that exists on the server when that musician is upvoted', async () => {
+
+		// Given: we create a resource on the server using the input defined
+		const createdMusicianResponse = await createMusicianOnServer(input)
+
+		// When: we then upvote that musician
+		const upvoteResponse = await upvoteMusician(createdMusicianResponse.body.id);
+
+		// Then: we should get a 200 status code
+		expect(upvoteResponse.status).toEqual(200)
+
+		// And: the response body should be as expected
+		const responseBody = response.body
+		expect(responseBody.name).toEqual(input.name)
+		expect(responseBody.bestSong).toEqual(input.bestSong)
+		expect(responseBody.votes).toEqual(1)
+		expect(responseBody._id).toBeTruthy()
+		expect(getAllKeysFromJson(responseBody).length).toEqual(4) // This helps to ensure we haven't missed any key values above!
+	})
+
+	it('should return a 404 and a response body that indicates the error if an upvote is attempted on a musician that does not exist on the server', async () => {
+		
+		// When: we attempt to upvote a musician resource that hasn't been created on the server
+		const response = await upvoteMusician("DOES_NOT_EXIST");
+
+		// Then: we should get a 404 status code
+		expect(response.status).toEqual(404)
+
+		// And: the response body should be as expected
+		expect(response.body.errors).toEqual([ "Sorry, not on the list" ])
+		expect(getAllKeysFromJson(response.body).length).toEqual(2) // This helps to ensure we haven't missed any keys in the response above! We expect `errors` and one array index.
+	})
 });
 
 const clearDatabaseCollections = async () => {
@@ -104,4 +139,8 @@ const createMusicianOnServer = async (input) => {
 
 const getMusicianByNameFromServer = async (musicianName) => {
 	return await server.get(`/api/v1/musicians?name=${musicianName}`)
+}
+
+const upvoteMusician = async (id) => {
+	return await server.put(`api/v1/musicians/${id}/votes`)
 }
